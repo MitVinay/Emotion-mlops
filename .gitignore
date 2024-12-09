@@ -1,6 +1,11 @@
 # Data
 /data/
 
+# Env
+/.emotion-mlops
+/.env
+
+
 # Mac OS-specific storage files
 .DS_Store
 
