@@ -23,5 +23,24 @@ stages:
     - feature_engineering.max_features
     outs:
     - data/processed
+  model_building:
+    cmd: python src/features/model_building.py
+    deps:
+    - data/processed
+    - src/features/model_building.py
+    outs:
+    - models/model.pkl
+  model_evaluation:
+    cmd: python src/features/model_evaluation.py
+    deps:
+    - models/model.pkl
+    - src/features/model_evaluation.py
+    metrics:
+    - reports/metrics.json
+    outs:
+    - reports/experiment_info.json
+
+
+
 
 
