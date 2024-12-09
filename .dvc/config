@@ -1,0 +1,2 @@
+['remote "emotion-mlops"']
+    url = https://dagshub.com/api/v1/repo-buckets/s3/MitVinay
