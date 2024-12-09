@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <!-- Link to the external CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="main-container">
+        <div class="card">
+            <h1>How are you feeling today?</h1>
+            <p>Let’s see what your words say about your mood.</p>
+
+            <form action="/predict" method="POST" class="form">
+                <textarea name="text" id="text" placeholder="Type your text here..." required></textarea>
+                <button type="submit" class="btn">Analyze</button>
+            </form>
+
+            <div id="result" class="result">
+                {% if sentiment %}
+                <p class="result-text {{ sentiment }}">{{ sentiment.capitalize() }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
