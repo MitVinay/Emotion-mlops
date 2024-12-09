@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis</title>
-    <!-- Link to the external CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Impact Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+  <div class="container">
+    <header>
+      <h1>Message Impact Analyzer</h1>
+      <p>Find out how your message might affect someone. Is it uplifting or could it be misinterpreted?</p>
+    </header>
 
-    <div class="main-container">
-        <div class="card">
-            <h1>How are you feeling today?</h1>
-            <p>Let’s see what your words say about your mood.</p>
-
-            <form action="/predict" method="POST" class="form">
-                <textarea name="text" id="text" placeholder="Type your text here..." required></textarea>
-                <button type="submit" class="btn">Analyze</button>
-            </form>
-
-            <div id="result" class="result">
-                {% if sentiment %}
-                <p class="result-text {{ sentiment }}">{{ sentiment.capitalize() }}</p>
-                {% endif %}
-            </div>
-        </div>
+    <div class="input-section">
+      <textarea id="messageInput" placeholder="Enter your message here..." rows="5"></textarea>
+      <button onclick="analyzeMessage()">Analyze Message</button>
     </div>
 
-</body>
+    <div id="resultSection" class="result-section">
+      <h2>Analysis Result:</h2>
+      <p id="resultText">Your message is awaiting analysis...</p>
+      <div id="suggestions" class="suggestions">
+        <p><strong>Suggestions:</strong></p>
+        <ul id="suggestionList">
+          <li>Ensure your tone is clear and positive!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    function analyzeMessage() {
+      const message = document.getElementById('messageInput').value;
+
+      fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('resultText').innerText = `The sentiment of your message is: ${data.sentiment}`;
+        const suggestions = data.suggestions;
+        let suggestionList = '';
+        suggestions.forEach(suggestion => {
+          suggestionList += `<li>${suggestion}</li>`;
+        });
+        document.getElementById('suggestionList').innerHTML = suggestionList;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('resultText').innerText = 'Error analyzing your message. Please try again.';
+      });
+    }
+  </script>
+</body>
 </html>
