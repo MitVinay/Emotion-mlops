@@ -31,10 +31,10 @@ stages:
     outs:
     - models/model.pkl
   model_evaluation:
-    cmd: python src/features/model_evaluation.py
+    cmd: python src/model/model_evaluation.py
     deps:
     - models/model.pkl
-    - src/features/model_evaluation.py
+    - src/model/model_evaluation.py
     metrics:
     - reports/metrics.json
     outs:
