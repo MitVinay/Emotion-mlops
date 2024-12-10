@@ -4,7 +4,127 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Message Impact Analyzer</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* General styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Body and overall layout */
+    body {
+      background-color: #f4f7f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      color: #4e73df;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #6c757d;
+      font-size: 1rem;
+    }
+    
+    /* Input section */
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      transition: border-color 0.3s ease;
+    }
+    
+    textarea:focus {
+      border-color: #4e73df;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #4e73df;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #2a46a1;
+    }
+    
+    /* Result section */
+    .result-section {
+      display: none;
+      margin-top: 20px;
+    }
+    
+    .result-section h2 {
+      font-size: 1.75rem;
+      color: #333;
+    }
+    
+    #resultText {
+      font-size: 1.25rem;
+      color: #28a745;
+      margin-top: 10px;
+    }
+    
+    .suggestions {
+      margin-top: 20px;
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .suggestions p {
+      font-size: 1.1rem;
+      color: #6c757d;
+    }
+    
+    #suggestionList {
+      margin-top: 10px;
+      list-style-type: none;
+      padding-left: 0;
+    }
+    
+    #suggestionList li {
+      font-size: 1rem;
+      color: #007bff;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -48,10 +168,12 @@
           suggestionList += `<li>${suggestion}</li>`;
         });
         document.getElementById('suggestionList').innerHTML = suggestionList;
+        document.getElementById('resultSection').style.display = 'block';
       })
       .catch(error => {
         console.error('Error:', error);
         document.getElementById('resultText').innerText = 'Error analyzing your message. Please try again.';
+        document.getElementById('resultSection').style.display = 'block';
       });
     }
   </script>
