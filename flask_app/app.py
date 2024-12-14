@@ -1,29 +1,37 @@
 from flask import Flask, render_template, request
-from textblob import TextBlob
+import pickle
+
+# Load the vectorizer and model
+with open("/Users/vinaymittal/Monash/Emotion-mlops/models/vectorizer.pkl", "rb") as file:
+    vect = pickle.load(file)
+
+with open("/Users/vinaymittal/Monash/Emotion-mlops/models/model.pkl", "rb") as file:
+    model = pickle.load(file)
 
 app = Flask(__name__)
 
-# Function for sentiment analysis
-def analyze_sentiment(text):
-    # Create a TextBlob object and get the sentiment polarity
-    blob = TextBlob(text)
-    polarity = blob.sentiment.polarity
-    # Classify based on polarity: positive polarity is happy, negative is sad
-    if polarity > 0:
-        return "happy"
-    else:
-        return "sad"
-
 @app.route("/", methods=["GET", "POST"])
-def index():
-    sentiment = None
-
-    # If the form is submitted, get the text and analyze sentiment
+def home():
     if request.method == "POST":
-        text = request.form["text"]
-        sentiment = analyze_sentiment(text)
+        # Retrieve text input from the form
+        user_input = request.form["text_input"]
+        print(user_input)
+        
+        # Transform the user input using the vectorizer (make sure it's in a list)
+        feature = vect.transform([user_input])
+        
+        
+        # Make prediction using the model
+        result = model.predict(feature)[0]
+        
+        # Analyze sentiment (this can be based on the model's output)
+        sentiment = "happy" if result == 1 else "sad"  # Example: Assuming 1 = happy, 0 = sad
 
-    return render_template("index.html", sentiment=sentiment)
+        # Return the page with original, transformed text, and the analysis result
+        return render_template('index.html', original=user_input, result=sentiment)
+    
+    
+    return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    app.run(host="127.0.0.1", port=8080)

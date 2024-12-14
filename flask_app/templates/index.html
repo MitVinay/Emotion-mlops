@@ -1,181 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Message Impact Analyzer</title>
-  <style>
-    /* General styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-    
-    /* Body and overall layout */
-    body {
-      background-color: #f4f7f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 20px;
-    }
-    
-    .container {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 600px;
-      padding: 30px;
-    }
-    
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    h1 {
-      font-size: 2.5rem;
-      color: #4e73df;
-      margin-bottom: 10px;
-    }
-    
-    p {
-      color: #6c757d;
-      font-size: 1rem;
-    }
-    
-    /* Input section */
-    .input-section {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    textarea {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      resize: none;
-      transition: border-color 0.3s ease;
-    }
-    
-    textarea:focus {
-      border-color: #4e73df;
-    }
-    
-    button {
-      padding: 10px 20px;
-      background-color: #4e73df;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    
-    button:hover {
-      background-color: #2a46a1;
-    }
-    
-    /* Result section */
-    .result-section {
-      display: none;
-      margin-top: 20px;
-    }
-    
-    .result-section h2 {
-      font-size: 1.75rem;
-      color: #333;
-    }
-    
-    #resultText {
-      font-size: 1.25rem;
-      color: #28a745;
-      margin-top: 10px;
-    }
-    
-    .suggestions {
-      margin-top: 20px;
-      background-color: #f8f9fa;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .suggestions p {
-      font-size: 1.1rem;
-      color: #6c757d;
-    }
-    
-    #suggestionList {
-      margin-top: 10px;
-      list-style-type: none;
-      padding-left: 0;
-    }
-    
-    #suggestionList li {
-      font-size: 1rem;
-      color: #007bff;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Analysis - Happiness or Sadness</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .happy {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .sad {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
-  <div class="container">
     <header>
-      <h1>Message Impact Analyzer</h1>
-      <p>Find out how your message might affect someone. Is it uplifting or could it be misinterpreted?</p>
+        <h1>Message Analysis: Will It Bring Happiness or Sadness?</h1>
+        <p>Enter your message, and we'll analyze whether it brings happiness or sadness to the world!</p>
     </header>
 
-    <div class="input-section">
-      <textarea id="messageInput" placeholder="Enter your message here..." rows="5"></textarea>
-      <button onclick="analyzeMessage()">Analyze Message</button>
+    <div class="container">
+        <form action="/" method="post">
+            <label for="text_input1">Enter the message you want to analyze:</label>
+            <input type="text" id="text_input1" name="text_input" required>
+            <button type="submit">Analyze Message</button>
+        </form>
+
+        {% if original %}
+            <div class="result">
+                <h2>Analysis Result</h2>
+                <p><strong>Original Text:</strong> {{ original }}</p>
+                <p><strong>Lowercase Text:</strong> {{ result }}</p>
+                    <strong>Analysis Result: </strong>
+                    {% if result == 'happy' %}
+                        This message brings a sense of happiness!
+                    {% else %}
+                        This message might bring sadness.
+                    {% endif %}
+            </div>
+        {% endif %}
     </div>
-
-    <div id="resultSection" class="result-section">
-      <h2>Analysis Result:</h2>
-      <p id="resultText">Your message is awaiting analysis...</p>
-      <div id="suggestions" class="suggestions">
-        <p><strong>Suggestions:</strong></p>
-        <ul id="suggestionList">
-          <li>Ensure your tone is clear and positive!</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function analyzeMessage() {
-      const message = document.getElementById('messageInput').value;
-
-      fetch('/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: message })
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('resultText').innerText = `The sentiment of your message is: ${data.sentiment}`;
-        const suggestions = data.suggestions;
-        let suggestionList = '';
-        suggestions.forEach(suggestion => {
-          suggestionList += `<li>${suggestion}</li>`;
-        });
-        document.getElementById('suggestionList').innerHTML = suggestionList;
-        document.getElementById('resultSection').style.display = 'block';
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('resultText').innerText = 'Error analyzing your message. Please try again.';
-        document.getElementById('resultSection').style.display = 'block';
-      });
-    }
-  </script>
 </body>
 </html>
