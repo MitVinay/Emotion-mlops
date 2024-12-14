@@ -22,7 +22,8 @@ def home():
         
         
         # Make prediction using the model
-        result = model.predict(feature)[0]
+        result = model.predict(feature)
+        print(result)
         
         # Analyze sentiment (this can be based on the model's output)
         sentiment = "happy" if result == 1 else "sad"  # Example: Assuming 1 = happy, 0 = sad
