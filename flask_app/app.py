@@ -2,10 +2,10 @@ from flask import Flask, render_template, request
 import pickle
 
 # Load the vectorizer and model
-with open("/Users/vinaymittal/Monash/Emotion-mlops/models/vectorizer.pkl", "rb") as file:
+with open("../models/vectorizer.pkl", "rb") as file:
     vect = pickle.load(file)
 
-with open("/Users/vinaymittal/Monash/Emotion-mlops/models/model.pkl", "rb") as file:
+with open("../models/model.pkl", "rb") as file:
     model = pickle.load(file)
 
 app = Flask(__name__)
