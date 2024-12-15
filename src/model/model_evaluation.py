@@ -35,6 +35,7 @@ repo_name = "Emotion-mlops"
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
+print("DagsHub credentials set up for MLflow tracking.")
 # logging configuration
 logger = logging.getLogger('model_evaluation')
 logger.setLevel('DEBUG')
