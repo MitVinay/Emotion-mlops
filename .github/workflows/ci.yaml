@@ -1,57 +1,52 @@
 name: CI Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+on: push
 
 jobs:
-  build:
+  project-testing:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code from the repository
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: checkout code
+        uses: actions/checkout@v3
 
-    # Set up Python 3.11.5
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11.5'
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
 
-    # Cache Python dependencies
-    - name: Cache Python dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-python-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-python-
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-    # Install dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt  # Assuming you have a requirements.txt for dependencies
+      - name: install dependencies
+        run: |
+          pip install -r requirements.txt
 
-    - name: Access Secret Key and Run Model Evaluation
-      env:
-        DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
-      run: |
-        dvc repro
-          # Run tests with unittest
+      - name: run pipeline
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: |
+          dvc repro
 
-    - name: Run model tests
-      env:
-        DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
-      run: |
+      - name: Run model tests
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: |
           python -m unittest tests/test_model.py
-          
 
+      - name: Promote model to production
+        if: success()
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: python scripts/promote_model.py
 
-    # Additional steps can be added here (e.g., testing, linting, etc.)
+      - name: Run Flask app tests
+        if: success()
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: python -m unittest tests/test_flask_app.py
