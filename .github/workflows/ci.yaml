@@ -39,9 +39,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt  # Assuming you have a requirements.txt for dependencies
 
-    - name: Access Secret Key
+    - name: Access Secret Key and Run Model Evaluation
       env:
-        MY_SECRET_KEY: ${{ secrets.DAGSHUB_PAT }}
+        DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
       run: |
         dvc repro
 
