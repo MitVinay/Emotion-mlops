@@ -22,8 +22,6 @@ repo_name = "Emotion-mlops"
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
-
-# logging configuration
 logger = logging.getLogger('model_registration')
 logger.setLevel('DEBUG')
 
@@ -80,7 +78,7 @@ def main():
         model_info_path = 'reports/experiment_info.json'
         model_info = load_model_info(model_info_path)
         
-        model_name = "new_model"
+        model_name = "my_model"
         register_model(model_name, model_info)
     except Exception as e:
         logger.error('Failed to complete the model registration process: %s', e)
