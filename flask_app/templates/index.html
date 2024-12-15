@@ -1,120 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Analysis - Happiness or Sadness</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
 
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+<html>
+    <head>
+        <title>Sentiment Analysis</title>
+    </head>
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 1em;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .result {
-            background-color: #fafafa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .happy {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .sad {
-            color: #f44336;
-            font-weight: bold;
-        }
-
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Message Analysis: Will It Bring Happiness or Sadness?</h1>
-        <p>Enter your message, and we'll analyze whether it brings happiness or sadness to the world!</p>
-    </header>
-
-    <div class="container">
-        <form action="/" method="post">
-            <label for="text_input1">Enter the message you want to analyze:</label>
-            <input type="text" id="text_input1" name="text_input" required>
-            <button type="submit">Analyze Message</button>
+    <body style="background-color: brown">
+        <h1>Sentiment Analysis</h1>
+        <form action="/predict" method="POST">
+            <label>Write text:</label><br>
+            <textarea name="text" rows="10" cols="40"></textarea><br>
+            <input type="submit" value="Predict">
         </form>
 
-        {% if original %}
-            <div class="result">
-                <h2>Analysis Result</h2>
-                <p><strong>Original Text:</strong> {{ original }}</p>
-                    <strong>Analysis Result: </strong>
-                    {% if result == 'happy' %}
-                        This message brings a sense of happiness!
-                    {% else %}
-                        This message might bring sadness.
-                    {% endif %}
-            </div>
+        {% if result is not none %}
+            {% if result == 1 %}
+                <h2>Happy</h2>
+            {% else %}
+                <h2>Sad</h2>
+            {% endif %}
         {% endif %}
-    </div>
-</body>
+    </body>
 </html>
