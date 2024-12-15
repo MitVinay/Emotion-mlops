@@ -44,6 +44,14 @@ jobs:
         DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
       run: |
         dvc repro
+          # Run tests with unittest
+
+    - name: Run model tests
+      env:
+        DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+      run: |
+          python -m unittest tests/test_model.py
+          
 
 
     # Additional steps can be added here (e.g., testing, linting, etc.)
