@@ -13,11 +13,20 @@ import os
 from dotenv import load_dotenv
 
 
-load_dotenv()
+# load_dotenv()
+# # Set up DagsHub credentials for MLflow tracking
+# dagshub_token = os.getenv("DAGSHUB_PAT")
+# os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+# os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
 # Set up DagsHub credentials for MLflow tracking
-dagshub_token = os.getenv("DAGSHUB_PAT")
+dagshub_token = os.getenv("DAGSHUB_PAT")  # Get the token from environment variable
+if not dagshub_token:
+    raise ValueError("DAGSHUB_PAT is not set. Please check your GitHub Actions configuration.")
+
 os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
 os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
 
 dagshub_url = "https://dagshub.com"
 repo_owner = "MitVinay"
